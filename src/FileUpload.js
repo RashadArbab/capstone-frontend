@@ -18,7 +18,8 @@ const FileUpload = () => {
         fd.append("file", file)
         setUploadProg((prevState)=> {return {...prevState, started: true}})
         console.log(process.env.REACT_APP_RUN_SETUP)
-        axios.post(`${process.env.REACT_APP_RUN_SETUP === 'production' ? "http://18.220.183.80/api/upload" : "http://localhost:8000/api/upload" } `, fd , {
+        const url = process.env.REACT_APP_RUN_SETUP === 'production' ? process.env.REACT_APP_PROD_SERVER_URL : process.env.REACT_APP_DEV_SERVER_URL
+        axios.post(`${url}/api/upload`, fd , {
             onUploadProgress: (progressEvent) => {
                 setUploadProg((prevState) => {return {...prevState, percent: progressEvent.progress *100 }})
             },
