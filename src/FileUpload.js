@@ -7,6 +7,8 @@ const FileUpload = () => {
     const [file, setFile] = useState(null) 
     const [uploadProg, setUploadProg] = useState({started: false, percent: 0})
     const [notification, setNotification] = useState({open: false})
+    
+
     const handleUpload = () => {
         if (!file) {
             console.log("no file was selected");
@@ -15,7 +17,8 @@ const FileUpload = () => {
         const fd = new FormData(); 
         fd.append("file", file)
         setUploadProg((prevState)=> {return {...prevState, started: true}})
-        axios.post("http://localhost:8000/upload", fd , {
+        console.log(process.env.REACT_APP_RUN_SETUP)
+        axios.post(`${process.env.REACT_APP_RUN_SETUP === 'production' ? "http://18.220.183.80/api/upload" : "http://localhost:8000/api/upload" } `, fd , {
             onUploadProgress: (progressEvent) => {
                 setUploadProg((prevState) => {return {...prevState, percent: progressEvent.progress *100 }})
             },
